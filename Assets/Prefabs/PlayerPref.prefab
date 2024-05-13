@@ -195,3 +195,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  ballPref: {fileID: 4913798477972696073, guid: e632258c0ae4359438271557bcf34486, type: 3}

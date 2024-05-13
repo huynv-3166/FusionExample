@@ -9,6 +9,8 @@ using System;
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     private NetworkRunner runner;
+    private bool mouseButton0;
+
     [SerializeField] private Dictionary<PlayerRef, NetworkObject> spawnCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
     [SerializeField] private NetworkPrefabRef playerPref;
@@ -63,9 +65,14 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
         if (Input.GetKey(KeyCode.D))
             data.direction += Vector3.right;
 
+        data.buttons.Set(NetworkInputData.MOUSEBUTTON0, mouseButton0);
         input.Set(data);
     }
 
+    private void Update()
+    {
+        mouseButton0 = mouseButton0 | Input.GetMouseButton(0);
+    }
     async void StartGame(GameMode mode)
     {
         runner = gameObject.AddComponent<NetworkRunner>();
