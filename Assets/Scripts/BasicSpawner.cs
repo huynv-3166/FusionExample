@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 using Fusion;
 using Fusion.Sockets;
 using System;
+using Fusion.Addons.Physics;
 
 public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
 {
     private NetworkRunner runner;
-    private bool mouseButton0;
+    public bool mouseButton0;
+    public bool mouseButton1;
 
     [SerializeField] private Dictionary<PlayerRef, NetworkObject> spawnCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
@@ -66,12 +68,17 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             data.direction += Vector3.right;
 
         data.buttons.Set(NetworkInputData.MOUSEBUTTON0, mouseButton0);
+        mouseButton0 = false;
+        data.buttons.Set(NetworkInputData.MOUSEBUTTON1, mouseButton1);
+        mouseButton1 = false;
+
         input.Set(data);
     }
 
     private void Update()
     {
-        mouseButton0 = mouseButton0 | Input.GetMouseButton(0);
+        mouseButton0 = mouseButton0 || Input.GetMouseButton(0);
+        mouseButton1 = mouseButton1 || Input.GetMouseButton(1);
     }
     async void StartGame(GameMode mode)
     {
@@ -92,6 +99,8 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+
+        gameObject.AddComponent<RunnerSimulatePhysics3D>();
     }
     private void OnGUI()
     {

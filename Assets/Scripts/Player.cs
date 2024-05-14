@@ -6,8 +6,10 @@ using UnityEngine;
 public class Player : NetworkBehaviour
 {
     public int speed = 5;
+    public int speedForward = 10;
 
     [SerializeField] private Ball ballPref;
+    [SerializeField] private PhysxBall physxBallPref;
 
     [Networked] private TickTimer delay { get; set; }
 
@@ -43,6 +45,19 @@ public class Player : NetworkBehaviour
                         (runner, o) =>
                         {
                             o.GetComponent<Ball>().Init();
+                        });
+                }
+                else if (data.buttons.IsSet(NetworkInputData.MOUSEBUTTON1))
+                {
+                    delay = TickTimer.CreateFromSeconds(Runner, delayTime);
+                    Runner.Spawn(
+                        physxBallPref,
+                        transform.position + forward,
+                        Quaternion.LookRotation(forward),
+                        Object.InputAuthority, 
+                        (runner, o) =>
+                        {
+                            o.GetComponent<PhysxBall>().Init(speedForward * forward);
                         });
                 }
             }

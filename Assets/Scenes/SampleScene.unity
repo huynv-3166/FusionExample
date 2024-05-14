@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754298d517ffd0a4b8fe11f108ccbfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouseButton0: 0
   playerPref:
     RawGuidValue: 53e9f4323f02d9941883450420877d72
 --- !u!4 &156687704
